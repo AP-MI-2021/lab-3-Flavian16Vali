@@ -40,8 +40,8 @@ def get_longest_all_even(lst: list[int]) -> list[int]:
             else :
                 lg=0
         i+=1
-
     return lst[st : fn+1]
+
 def test_get_longest_all_even():
     assert get_longest_all_even([1, 2, 3, 4, 4])==[4, 4]
     assert get_longest_all_even([1,3,5,9,4,8])==[4, 8]
@@ -83,11 +83,53 @@ def test_get_longest_same_div_count():
     assert get_longest_same_div_count([4,4,4,6,6,6,6])==[6,6,6,6]
     assert get_longest_same_div_count([6,12,24])==[6]
 
+def is_prime(n):
+    if n==1:return 0
+    d=0
+    for i in range(1,n+1):
+        if n%i==0:d=d+1
+    if d==2: return 1
+    else: return 0
+def get_longest_all_primes(lst: list[int]) -> list[int]:
+    '''
+    Toate numerele sunt prime.
+    :param lst: lsita cu elemente
+    :return: lista cea mai lunga de numere prime
+    '''
+    st = -1
+    fn = -1
+    lgmax=0
+    i=1
+    if lst[0] % 2 == 0:
+        lg = 1
+    else:
+        lg = 0
+    lst.append(1)
+    while i<len(lst) :
+        if is_prime(lst[i])+is_prime(lst[i-1])==2 :
+            lg+=1
+        else :
+            if lg>lgmax :
+                fn=i-1
+                st=i-lg
+                lgmax=lg
+            if is_prime(lst[i])==1 :
+                lg=1
+            else :
+                lg=0
+        i+=1
+    if st==0 and is_prime(lst[st])==0:return "nu sunt numere prime"
+    else: return lst[st : fn+1]
+def test_get_longest_all_primes():
+    assert get_longest_all_primes([1,2,3,4,5,6,7,8,9,10])==[2,3]
+    assert get_longest_all_primes([2,3,5,7,11])==[2,3,5,7,11]
+    assert get_longest_all_primes([4,8,10])==[]
+
 def main():
 
     while True:
         show_menu()
-        opt = input("Optiunea dorita: ")
+        opt = input("Optiunea dorita este: ")
         if opt=='1':
             lst=read_list()
         elif opt=='2':
@@ -97,6 +139,9 @@ def main():
         elif opt=='3':
             lst3=get_longest_same_div_count(lst)
             print(lst3)
+        elif opt=='4':
+            lst4=get_longest_all_primes(lst)
+            print(lst4)
         elif opt=='x':
             break
         else:
@@ -105,5 +150,6 @@ def main():
 
     test_get_longest_all_even()
     test_get_longest_same_div_count()
+    test_get_longest_all_primes()
 if __name__ == '__main__':
     main()
